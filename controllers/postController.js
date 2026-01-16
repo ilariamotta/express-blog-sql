@@ -2,21 +2,20 @@ import posts from "../data.js"
 import connection from "../data/db.js"
 
 function index(req, res) {
-    const tags = req.query.tags;
+    const query = "SELECT * FROM `posts`";
 
-    let filteredVideogames = posts;
-    if (tags !== undefined) {
-        filteredVideogames = posts.filter((videogame) =>
-            videogame.tags.includes(tags)
-        )
+    connection.query(query, (err, result) =>{
+    if (err) {
+        res.status(505);
+        return res.json ({
+            message: "Internal Server Error"
+        })
     }
-
-    const listaVideogiochi = {
-        totale: filteredVideogames.length,
-        risultati: filteredVideogames,
-
-    }
-    res.json(listaVideogiochi)
+    
+    res.json ({
+        results: result
+    })
+    })
 }
 
 function show(req, res) {
