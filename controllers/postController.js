@@ -92,18 +92,19 @@ function modify(req, res) {
 }
 
 function destroy(req, res) {
-    const id = parseInt(req.params.id);
-    const index = posts.findIndex((gioco) => gioco.id === id)
-    if (index === -1) {
-        res.status(404)
-        res.json({
-            error: "Not found",
-            message: "Videogioco non trovato"
-        })
-    } else {
-        posts.splice(index, 1)
-    }
-    res.sendStatus(204)
+    const id = req.params.id;
+    const query = "DELETE FROM `posts` WHERE id = ?";
+    connection.query(query, [id], (err) => {
+        if (err) {
+            res.status(500);
+            return res.json({
+                message: "Internal Server Error"
+            })
+        }
+        res.sendStatus(204)
+    }) 
+
+    
 }
 
 const controller = {
