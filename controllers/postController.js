@@ -1,4 +1,5 @@
 import posts from "../data.js"
+import connection from "../data/db.js"
 
 function index(req, res) {
     const tags = req.query.tags;
