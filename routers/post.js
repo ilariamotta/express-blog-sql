@@ -12,7 +12,9 @@ router.get("/", controller.index)
 
 //SHOW
 
-router.get("/:id", controller.show)
+// router.get("/:id", controller.show)
+
+router.get("/:id", controller.showPostWithTags)
 
 
 // STORE
