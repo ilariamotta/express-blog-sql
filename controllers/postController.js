@@ -18,21 +18,32 @@ function index(req, res) {
     })
 }
 
-function show(req, res) {
-    const id = parseInt(req.params.id);
-    const videogioco = posts.find(game => game.id === id)
 
-    if (videogioco !== undefined) {
-        res.json(videogioco)
-    } else {
-        res.status(404)
-        res.json({
-            error: "Not found",
-            message: "Videogioco non in elenco"
+function show(req, res) {
+const id = req.params.id;
+const query = "SELECT * FROM `posts` WHERE `posts`.`id` = ?";
+
+connection.query(query, [id], (err, result) => {
+    if (err) {
+        res.status(500);
+        return res.json({
+            message: "Internal Server Error"
         })
     }
+    if (result.length === 0) {
+        res.status(404);
+        res.json({
+            message: "Post non trovato"
+        })
+    } else {
+        const post = result[0];
+        res.json(post)
+    }
+})
 
 }
+
+
 
 
 function store(req, res) {
